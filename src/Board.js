@@ -6,8 +6,14 @@
 
   window.Board = Backbone.Model.extend({
 
+    //var Board = blah blah
     initialize: function (params) {
+      //debugger;
+
+
+
       if (_.isUndefined(params) || _.isNull(params)) {
+        //debugger;
         console.log('Good guess! But to use the Board() constructor, you must pass it an argument in one of the following formats:');
         console.log('\t1. An object. To create an empty board of size n:\n\t\t{n: %c<num>%c} - Where %c<num> %cis the dimension of the (empty) board you wish to instantiate\n\t\t%cEXAMPLE: var board = new Board({n:5})', 'color: blue;', 'color: black;','color: blue;', 'color: black;', 'color: grey;');
         console.log('\t2. An array of arrays (a matrix). To create a populated board of size n:\n\t\t[ [%c<val>%c,%c<val>%c,%c<val>%c...], [%c<val>%c,%c<val>%c,%c<val>%c...], [%c<val>%c,%c<val>%c,%c<val>%c...] ] - Where each %c<val>%c is whatever value you want at that location on the board\n\t\t%cEXAMPLE: var board = new Board([[1,0,0],[0,1,0],[0,0,1]])', 'color: blue;', 'color: black;','color: blue;', 'color: black;', 'color: blue;', 'color: black;', 'color: blue;', 'color: black;', 'color: blue;', 'color: black;', 'color: blue;', 'color: black;', 'color: blue;', 'color: black;', 'color: blue;', 'color: black;', 'color: blue;', 'color: black;', 'color: blue;', 'color: black;', 'color: grey;');
@@ -19,6 +25,7 @@
     },
 
     rows: function() {
+
       return _(_.range(this.get('n'))).map(function(rowIndex) {
         return this.get(rowIndex);
       }, this);
@@ -79,12 +86,42 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+
+
+
+      var currentRow = this.rows()[rowIndex];
+
+      var numberQueensInCurrentRow = 0;
+
+      for(var x = 0; x < currentRow.length; x++){
+        if(currentRow[x] === 1){
+          numberQueensInCurrentRow++
+        }
+      }
+
+      if(numberQueensInCurrentRow > 1){
+        return true
+      } else{
+        return false
+      }
+
+
+
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      return false; // fixme
+      //console.log(this.hasRowConflictAt)
+
+      for(var x = 0; x < this.rows().length; x++){
+          if(this.hasRowConflictAt(x)){
+            return true;
+          }
+      }
+
+
+      return false;
+
     },
 
 
@@ -94,12 +131,55 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+
+
+      var currentColumn = [];
+
+      for(var x = 0; x < this.rows().length; x++){
+          currentColumn.push(this.rows()[x][colIndex]);
+      }
+
+      console.log(currentColumn);
+
+      var numPiecesInCurrentColumn = 0;
+
+      for(var z = 0; z < currentColumn.length; z++){
+        if(currentColumn[z] === 1){
+          numPiecesInCurrentColumn++;
+        }
+      }
+
+      if(numPiecesInCurrentColumn > 1){
+        return true
+      } else{
+        return false;
+      }
+
+
+
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      return false; // fixme
+
+      var columns = [];
+
+      for(var a = 0; a < this.rows(); a++){
+
+          for(var b = 0; )
+
+
+
+
+
+
+      }
+
+
+
+
+
+
     },
 
 
