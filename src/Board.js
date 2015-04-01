@@ -139,8 +139,6 @@
           currentColumn.push(this.rows()[x][colIndex]);
       }
 
-      console.log(currentColumn);
-
       var numPiecesInCurrentColumn = 0;
 
       for(var z = 0; z < currentColumn.length; z++){
@@ -164,21 +162,15 @@
 
       var columns = [];
 
-      for(var a = 0; a < this.rows(); a++){
+      for(var a = 0; a < this.rows().length; a++){
 
-          for(var b = 0; )
+          if(this.hasColConflictAt(a)){
+            return true
+          }
 
+        }
 
-
-
-
-
-      }
-
-
-
-
-
+      return false;
 
     },
 
