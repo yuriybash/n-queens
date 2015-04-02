@@ -172,6 +172,10 @@
 
     },
 
+    hasAnyConflicts: function(){
+      return (this.hasAnyRowConflicts() || this.hasAnyColConflicts());
+    },
+
 
 
     // Major Diagonals - go from top-left to bottom-right
