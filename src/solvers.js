@@ -66,23 +66,28 @@ window.countNRooksSolutions = function(n) {
 
   var subSearch = function(inputBoard, rowCount){
 
-    if(rowCount === n && !inputBoard.hasAnyConflict()){
+
+
+    if(rowCount === n && !inputBoard.hasAnyConflicts()){
       numberOfSolutions++;
       return;
     }
 
     for(var x = 0; x < n; x++){
       inputBoard.togglePiece(rowCount, x);
-      if(inputBoard.hasAnyConflict()){
+      if(inputBoard.hasAnyConflicts()){
+        console.log( "row count: " + rowCount)
         inputBoard.togglePiece(rowCount, x);
+        console.log(inputBoard.rows());
       }
       else {
-        subSearch(inputBoard, rowCount + 1);
+        //console.log("else ran once")
+        subSearch(new Board(inputBoard.rows()), rowCount + 1);
       }
     }
   }
-  subSearch(board, 0);
-
+  subSearch(new Board(board.rows()), 0);
+  return numberOfSolutions;
 };
     // if(rowCount < n && inputBoard.hasAnyConflicts()){
     //   return;
