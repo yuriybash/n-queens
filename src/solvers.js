@@ -23,7 +23,7 @@ window.findNRooksSolution = function(n, startingCol, startingRooks) {
 
     for(var i = 0; i < startingRooks.length; i++){
       rooksBoard.togglePiece(i, startingRooks[i]);
-    console.log(startingRooks[i]+", " + i + ", "+ rooksBoard.rows()[i]);
+    //console.log(startingRooks[i]+", " + i + ", "+ rooksBoard.rows()[i]);
     };
 
     for(currentRow; currentRow < n; currentRow++){
@@ -108,9 +108,10 @@ window.countNRooksSolutions = function(n) {
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n, startingCol, startingRooks) {
-  var board = new Board({'n':n});
+   var board = new Board({'n':n});
   var numberOfSolutions = 0;
-  var winningBoard;
+  var tempBoard = -1;
+  var newRows = [];
 
 
 
@@ -119,12 +120,14 @@ window.findNQueensSolution = function(n, startingCol, startingRooks) {
     //debugger;
 
 
+
     if(rowCount === n && !inputBoard.hasAnyConflictsQueens()){
-
-
-        winningBoard = new Board(inputBoard.rows());
-
+      newRows = _.map(inputBoard.rows(), function (val){
+        return val.slice();
+      });
+      tempBoard = new Board(newRows);
       numberOfSolutions++;
+      //debugger;
       return;
     }
 
@@ -144,8 +147,12 @@ window.findNQueensSolution = function(n, startingCol, startingRooks) {
   }
   subSearch(new Board(board.rows()), 0);
 
-return winningBoard.rows();
 
+  if(tempBoard === -1){
+    return (new Board({'n':n})).rows();
+  }
+
+  return tempBoard.rows();
 };
 
 
