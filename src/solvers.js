@@ -66,7 +66,7 @@ window.countNRooksSolutions = function(n) {
 
   var subSearch = function(inputBoard, rowCount){
 
-
+    //debugger;
 
     if(rowCount === n && !inputBoard.hasAnyConflicts()){
       numberOfSolutions++;
@@ -74,15 +74,16 @@ window.countNRooksSolutions = function(n) {
     }
 
     for(var x = 0; x < n; x++){
-      inputBoard.togglePiece(rowCount, x);
+      inputBoard.togglePiece(rowCount, x);    //[[0, 1], [1, 0]]
       if(inputBoard.hasAnyConflicts()){
-        console.log( "row count: " + rowCount)
+        //console.log( "row count: " + rowCount)
         inputBoard.togglePiece(rowCount, x);
-        console.log(inputBoard.rows());
+        //console.log(inputBoard.rows());
       }
       else {
         //console.log("else ran once")
         subSearch(new Board(inputBoard.rows()), rowCount + 1);
+        inputBoard.togglePiece(rowCount, x);
       }
     }
   }
