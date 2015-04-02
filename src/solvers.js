@@ -13,34 +13,66 @@
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
 
-window.findNRooksSolution = function(n) {
+window.findNRooksSolution = function(n, startingCol, startingRooks) {
 
     var rooksBoard = new Board({'n': n});
+    var currentColumn = startingCol || 0;
+    startingRooks = startingRooks || [];
+    var currentRow = startingRooks.length || 0;
+    var numRooks = 0;
 
-    for(var currentRow = 0; currentRow < n; currentRow++){
+    for(var i = 0; i < startingRooks.length; i++){
+      rooksBoard.togglePiece(i, startingRooks[i]);
+    console.log(startingRooks[i]+", " + i + ", "+ rooksBoard.rows()[i]);
+    };
 
-        for(var currentColumn = 0; currentColumn < n; currentColumn++){
+    for(currentRow; currentRow < n; currentRow++){
+
+        for(currentColumn; currentColumn < n; currentColumn++){
 
             rooksBoard.togglePiece(currentRow, currentColumn);
 
             if(rooksBoard.hasAnyRowConflicts() || rooksBoard.hasAnyColConflicts()){
                 rooksBoard.togglePiece(currentRow, currentColumn);
             }
-
         }
+      currentColumn = 0;
     }
 
+    var numRooks = this.countPieces(rooksBoard)
+
+    if(numRooks < n)
+      this.findNRooksSolution(n, startingCol + 1);
+
     return (rooksBoard.rows());
-
-
 };
 
+window.countPieces = function (board) {
+  var reduceCallback = function (accumulator, val) {
+      return accumulator  + val;
+    };
+  var numRooks = _.reduce(board.rows(), function (acc, val){
+          return acc + _.reduce(val, reduceCallback);
+        },0);
 
+  return numRooks;
+};
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
-window.countNRooksSolutions = function(n) {
+window.countNRooksSolutions = function(n, startingRow) {
   //return 2*n;
-  var solutionCount = undefined; //fixme
+  var solutionCount = 0; //fixme
+  var solutionIndexs = [];
+  var solutionIndex;
+
+  for(var i = 0; i < n; i++){
+    solutionIndex = this.findNRooksSolution(n, i)[0].indexOf(1);
+    if(solutionIndexs.indexOf(solutionIndex) === -1) {
+      solutionCount++;
+      solutionIndexs.push(solutionIndex);
+    }
+
+  }
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
