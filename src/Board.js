@@ -176,19 +176,25 @@
       return (this.hasAnyRowConflicts() || this.hasAnyColConflicts());
     },
 
+hasAnyConflictsQueens: function(){
+      return (this.hasAnyRowConflicts() || this.hasAnyColConflicts() || this.hasAnyMajorDiagonalConflicts() || this.hasAnyMinorDiagonalConflicts());
+    },
 
 
     // Major Diagonals - go from top-left to bottom-right
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
-    hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
+    hasMajorDiagonalConflictAt: function(startCol, startRow) {
 
         var queenCount = 0;
+        startRow = startRow || 0;
+        var diagCount = 0;
 
-        for(var x = 0; x < this.rows().length; x++){
+        for(startRow; startRow < this.rows().length; startRow++){
 
-            queenCount += this.rows()[x][majorDiagonalColumnIndexAtFirstRow + x] || 0;
+            queenCount += this.rows()[startRow][startCol + diagCount] || 0;
+            diagCount++;
         }
 
         return queenCount > 1 ? true : false;
@@ -201,7 +207,7 @@
 
       for(var x = 0; x < this.rows().length; x++){
         for(var y = 0; y < this.rows()[x].length; y++){
-          if(this.hasMajorDiagonalConflictAt(y)){
+          if(this.hasMajorDiagonalConflictAt(y, x)){
             return true;
           }
         }
@@ -218,13 +224,15 @@
     // --------------------------------------------------------------
     //
     // test if a specific minor diagonal on this board contains a conflict
-    hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
+    hasMinorDiagonalConflictAt: function(startCol, startRow) {
 
       var queenCount = 0;
+      startRow = startRow || 0;
+      var diagCount = 0;
 
-        for(var x = 0; x < this.rows().length; x++){
-
-            queenCount += this.rows()[x][minorDiagonalColumnIndexAtFirstRow - x] || 0;
+        for(startRow; startRow < this.rows().length; startRow++){
+            queenCount += this.rows()[startRow][startCol - diagCount] || 0;
+            diagCount++;
         }
 
         return queenCount > 1 ? true : false;
@@ -239,7 +247,8 @@
 
       for(var x = 0; x < this.rows().length; x++){
         for(var y = 0; y < this.rows()[x].length; y++){
-          if(this.hasMinorDiagonalConflictAt(y)){
+
+          if(this.hasMinorDiagonalConflictAt(y, x)){
             return true;
           }
         }
